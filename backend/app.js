@@ -8,13 +8,14 @@ const tasks = require('./routes/api/tasks');
 const auth = require('./routes/api/auth');
 const config = require('./config/configs');
 const logger = require('./utilities/logger');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
 
 app.use('/uploads', express.static('uploads'));
 // Cors middleware
-//app.use(cors());
+app.use(cors());
 
 // Bodyparser
 app.use(express.json());
