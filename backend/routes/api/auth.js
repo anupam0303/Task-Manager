@@ -43,7 +43,7 @@ router.post('/', (request, response) => {
                                 throw err;
                             }
                             else {
-                                response.json({token, user: {id: user.id, firstName: user.firstName, lastName: user.lastName, userPic: user.userPic}});
+                                response.json({success: true, token, user: {id: user.id, firstName: user.firstName, lastName: user.lastName, userPic: user.userPic}});
                             }
                         }
                     )
