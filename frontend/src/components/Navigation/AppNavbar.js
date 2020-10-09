@@ -24,7 +24,7 @@ const AppNavbar = (props) => {
   return (
     <div>
       <Navbar color="dark" dark  expand="md">
-        <NavbarBrand href="/">Let's Plan</NavbarBrand>
+        <NavbarBrand href="/">Task Manager</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav color = "white" className="mr-auto" navbar>
@@ -40,7 +40,7 @@ const AppNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                    <NavLink style={{ "color": "black" }} href="/programincrements">Program Increments</NavLink>
+                    <NavLink style={{ "color": "black" }} href="/boards">Boards</NavLink>
                 </DropdownItem>
                 <DropdownItem>
                     <NavLink style={{ "color": "black" }} href="/teams">Teams</NavLink>

@@ -17,7 +17,8 @@ const router = express.Router();
 // @desc Create a new board
 // @access Authorized Users
 /*********************************************/
-router.post('/', auth, (request, response) => {
+router.post('/',  (request, response) => {
+    //router.post('/', auth, (request, response) => {
     const {boardName} = request.body;
     // Validation for mandatory parameters
     if(!boardName){
@@ -45,7 +46,8 @@ router.post('/', auth, (request, response) => {
 // @desc Gets all active boards for user
 // @access Authorized Users
 /*********************************************/
-router.get('/', auth, (request, response) => {
+router.get('/',  (request, response) => {
+    //router.get('/', auth, (request, response) => {
     // Find boards which are created by logged in user or user is member
     board.find({status: 'Active', $or: [{createdBy: request.user.name},{adminUsers: request.user.name},
         { memberUsers: request.user.name}, {invitedUsers: request.user.name}  ]})
