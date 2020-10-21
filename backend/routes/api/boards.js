@@ -26,11 +26,11 @@ router.post('/',  (request, response) => {
         return response.status(400).json({success: false, msg: messages.BOARD_CREATE_BAD_REQUEST})
     }
     else{
-        logger.log('/boards POST API', 'email is : ' + request.user.name);
+        logger.log('/boards POST API', 'email is : ' + request.body.name);
         const newBoard = new Board({
             boardName: request.body.boardName,
-            createdBy: request.user.name,
-            lastUpdatedBy: request.user.name
+            createdBy: request.body.name,
+            lastUpdatedBy: request.body.name
 
         });
         newBoard.save()

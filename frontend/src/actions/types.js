@@ -1,6 +1,9 @@
 export const GET_BOARDS = 'GET_BOARDS';
 export const BOARDS_LOADING = 'BOARDS_LOADING';
 
+export const CREATE_BOARD = 'CREATE_BOARD';
+export const BOARD_CREATE_SUCCESS = 'BOARD_CREATE_SUCCESS';
+export const BOARD_CREATE_FAIL =  'BOARD_CREATE_FAIL';
 
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
