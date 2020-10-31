@@ -8,7 +8,9 @@ import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
+
+import BoardCard from "../../components/UI/BoardCard/BoardCard";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -38,6 +40,10 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(5),
     width: "45ch",
   },
+  icon: {
+    backgroundColor: '#2874a6',
+    color: 'white'
+  }
 });
 
 class Boards extends Component {
@@ -49,7 +55,7 @@ class Boards extends Component {
 
   componentDidMount() {
     console.log("Calling getBoards method");
-    //this.props.getBoards();
+    this.props.getBoards();
   }
 
   onChange = (e) => {
@@ -69,27 +75,29 @@ class Boards extends Component {
   handleCreateBoard = () => {
     const { boardName, name } = this.state;
     const newBoard = {
-        boardName,
-        name,
+      boardName,
+      name,
     };
-    
+
     // Create new Board
     this.props.createBoard(newBoard);
-    
   };
 
   render() {
     const { classes } = this.props;
+    const { boards } = this.props.boards;
     const newBoardBody = (
       <div className={classes.root}>
         <Paper>
           <h2 id="simple-modal-title" className={classes.root}>
             Create Board
           </h2>
-          {this.props.error.status? <Alert severity="error">{this.props.error.msg.msg}</Alert>:null}
+          {this.props.error.status ? (
+            <Alert severity="error">{this.props.error.msg.msg}</Alert>
+          ) : null}
           <TextField
             className={classes.textField}
-            name = "boardName"
+            name="boardName"
             label="Board Name"
             id="standard-size-small"
             defaultValue=""
@@ -100,7 +108,7 @@ class Boards extends Component {
             className={classes.button}
             variant="contained"
             color="primary"
-            onClick = {this.handleCreateBoard}
+            onClick={this.handleCreateBoard}
           >
             CREATE BOARD
           </Button>
@@ -117,7 +125,7 @@ class Boards extends Component {
           alignItems="center"
         >
           <span />
-          <Fab color="primary" aria-label="add" onClick={this.handleOpen}>
+          <Fab className={classes.icon} aria-label="add" onClick={this.handleOpen}>
             <AddIcon />
           </Fab>
         </Grid>
@@ -129,6 +137,17 @@ class Boards extends Component {
         >
           {newBoardBody}
         </Modal>
+        <Grid container spacing={3}>
+          {boards.map((board) => (
+            <Grid item xs={3} key={board._id}>
+              <BoardCard
+                id={board._id}
+                name={board.boardName}
+                date = {board.lastUpdatedDate}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </div>
     );
   }
@@ -140,7 +159,7 @@ Boards.propTypes = {
 
 const mapStateToProps = (state) => ({
   boards: state.boards,
-  error: state.error
+  error: state.error,
 });
 
 export default connect(mapStateToProps, { getBoards, createBoard })(
