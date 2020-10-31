@@ -26,11 +26,11 @@ router.post('/',  (request, response) => {
         return response.status(400).json({success: false, msg: messages.BOARD_CREATE_BAD_REQUEST})
     }
     else{
-        logger.log('/boards POST API', 'email is : ' + request.user.name);
+        logger.log('/boards POST API', 'email is : ' + request.body.name);
         const newBoard = new Board({
             boardName: request.body.boardName,
-            createdBy: request.user.name,
-            lastUpdatedBy: request.user.name
+            createdBy: request.body.name,
+            lastUpdatedBy: request.body.name
 
         });
         newBoard.save()
@@ -49,8 +49,10 @@ router.post('/',  (request, response) => {
 router.get('/',  (request, response) => {
     //router.get('/', auth, (request, response) => {
     // Find boards which are created by logged in user or user is member
-    board.find({status: 'Active', $or: [{createdBy: request.user.name},{adminUsers: request.user.name},
-        { memberUsers: request.user.name}, {invitedUsers: request.user.name}  ]})
+    name = "anupam@test.com";
+    logger.log('/boards GET API', 'email is : ' + name);
+    board.find({status: 'Active', $or: [{createdBy: name},{adminUsers: name},
+        { memberUsers: name}, {invitedUsers: name}  ]})
     .then(board => {
         if(board.length==0){
             response.status(404).json({success: false, msg: messages.BOARD_NOT_FOUND});
