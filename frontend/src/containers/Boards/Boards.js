@@ -14,7 +14,7 @@ import BoardCard from "../../components/UI/BoardCard/BoardCard";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getBoards, createBoard } from "../../actions/boardsActions";
+import { getBoards, createBoard } from "../../actions/boardActions";
 
 const useStyles = (theme) => ({
   root: {
@@ -35,6 +35,7 @@ const useStyles = (theme) => ({
     width: "40ch",
   },
   button: {
+    backgroundColor: '#2874a6',
     marginLeft: theme.spacing(5),
     marginRight: theme.spacing(5),
     marginTop: theme.spacing(5),
