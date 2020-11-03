@@ -46,10 +46,10 @@ router.post('/',  (request, response) => {
 // @desc Gets all active boards for user
 // @access Authorized Users
 /*********************************************/
-router.get('/',  (request, response) => {
+router.get('/', auth, (request, response) => {
     //router.get('/', auth, (request, response) => {
     // Find boards which are created by logged in user or user is member
-    name = "anupam@test.com";
+    name = response.user.name;
     logger.log('/boards GET API', 'email is : ' + name);
     board.find({status: 'Active', $or: [{createdBy: name},{adminUsers: name},
         { memberUsers: name}, {invitedUsers: name}  ]})
@@ -59,7 +59,7 @@ router.get('/',  (request, response) => {
         }
         else {
             response.json(board);
-        }    
+        }     
     })
     .catch(error => resonse.status(500).json({success: false, msg: error}));
 })
