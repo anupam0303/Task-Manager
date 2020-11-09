@@ -17,7 +17,7 @@ const router = express.Router();
 // @desc Create a new board
 // @access Authorized Users
 /*********************************************/
-router.post('/',  (request, response) => {
+router.post('/', auth, (request, response) => {
     //router.post('/', auth, (request, response) => {
     const {boardName} = request.body;
     // Validation for mandatory parameters

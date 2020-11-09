@@ -4,13 +4,18 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 
+import {
+  Modal,
+  ModalHeader,
+} from "reactstrap";
+
 import BoardCard from "../../components/UI/BoardCard/BoardCard";
+import { clearErrors } from "../../actions/errorActions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -23,9 +28,9 @@ const useStyles = (theme) => ({
     justifyContent: "center",
     flexWrap: "wrap",
     "& > *": {
-      margin: theme.spacing(10),
+      margin: theme.spacing(5),
       width: theme.spacing(55),
-      height: theme.spacing(40),
+      height: theme.spacing(25),
     },
   },
   textField: {
@@ -50,8 +55,7 @@ const useStyles = (theme) => ({
 class Boards extends Component {
   state = {
     open: false,
-    boardName: "",
-    name: "anupam@test.com",
+    boardName: ""
   };
 
   componentDidMount() {
@@ -73,6 +77,15 @@ class Boards extends Component {
     this.setState({ open: false });
   };
 
+  toggle = () => {
+    // Clear Errors
+    console.log('Toggle is called, setting value to: ' + !this.state.open);
+    this.props.clearErrors();
+    this.setState({
+      open: !this.state.open,
+    });
+  };
+
   handleCreateBoard = () => {
     const { boardName, name } = this.state;
     const newBoard = {
@@ -90,9 +103,6 @@ class Boards extends Component {
     const newBoardBody = (
       <div className={classes.root}>
         <Paper>
-          <h2 id="simple-modal-title" className={classes.root}>
-            Create Board
-          </h2>
           {this.props.error.status ? (
             <Alert severity="error">{this.props.error.msg.msg}</Alert>
           ) : null}
@@ -126,16 +136,17 @@ class Boards extends Component {
           alignItems="center"
         >
           <span />
-          <Fab className={classes.icon} aria-label="add" onClick={this.handleOpen}>
+          <Fab className={classes.icon} aria-label="add" onClick={this.toggle}>
             <AddIcon />
           </Fab>
         </Grid>
         <Modal
-          open={this.state.open}
-          onClose={this.handleClose}
+          isOpen={this.state.open}
+          toggle={this.toggle}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
+           <ModalHeader toggle={this.toggle}>Create Board</ModalHeader>
           {newBoardBody}
         </Modal>
         <Grid container spacing={3}>
@@ -163,6 +174,6 @@ const mapStateToProps = (state) => ({
   error: state.error,
 });
 
-export default connect(mapStateToProps, { getBoards, createBoard })(
+export default connect(mapStateToProps, { getBoards, createBoard, clearErrors })(
   withStyles(useStyles)(Boards)
 );

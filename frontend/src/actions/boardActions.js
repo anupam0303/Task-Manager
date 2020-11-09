@@ -19,7 +19,7 @@ export const getBoards = () => (dispatch) => {
 };
 
 // Create new board
-export const createBoard = ({ boardName, name }) => (dispatch) => {
+export const createBoard = ({ boardName }) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -28,7 +28,7 @@ export const createBoard = ({ boardName, name }) => (dispatch) => {
   };
 
   // Request Body
-  const body = JSON.stringify({ boardName, name });
+  const body = JSON.stringify({ boardName });
   axios
     .post("/api/boards", body, config)
     .then((response) =>
