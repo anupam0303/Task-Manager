@@ -9,17 +9,16 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 
-import {
-  Modal,
-  ModalHeader,
-} from "reactstrap";
+import { Modal, ModalHeader, Container } from "reactstrap";
 
 import BoardCard from "../../components/UI/BoardCard/BoardCard";
+import Guest from "../../components/UI/Guest/Guest";
 import { clearErrors } from "../../actions/errorActions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getBoards, createBoard } from "../../actions/boardActions";
+import {verifyToken} from "../../actions/authActions";
 
 const useStyles = (theme) => ({
   root: {
@@ -40,25 +39,29 @@ const useStyles = (theme) => ({
     width: "40ch",
   },
   button: {
-    backgroundColor: '#2874a6',
+    backgroundColor: "#2874a6",
     marginLeft: theme.spacing(5),
     marginRight: theme.spacing(5),
     marginTop: theme.spacing(5),
     width: "45ch",
   },
   icon: {
-    backgroundColor: '#2874a6',
-    color: 'white'
-  }
+    backgroundColor: "#2874a6",
+    color: "white",
+  },
 });
 
 class Boards extends Component {
   state = {
     open: false,
-    boardName: ""
+    boardName: "",
   };
 
   componentDidMount() {
+    if (!this.props.auth.isAuthenticated && this.props.auth.token){
+      console.log('Token present but it is not authunticated, calling verify token');
+      this.props.verifyToken();
+    }
     console.log("Calling getBoards method");
     this.props.getBoards();
   }
@@ -69,17 +72,9 @@ class Boards extends Component {
     });
   };
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   toggle = () => {
     // Clear Errors
-    console.log('Toggle is called, setting value to: ' + !this.state.open);
+    console.log("Toggle is called, setting value to: " + !this.state.open);
     this.props.clearErrors();
     this.setState({
       open: !this.state.open,
@@ -100,6 +95,7 @@ class Boards extends Component {
   render() {
     const { classes } = this.props;
     const { boards } = this.props.boards;
+    const { isAuthenticated } = this.props.auth;
     const newBoardBody = (
       <div className={classes.root}>
         <Paper>
@@ -127,7 +123,7 @@ class Boards extends Component {
       </div>
     );
 
-    return (
+    const authDisplay = (
       <div style={{ padding: 20 }}>
         <Grid
           container
@@ -146,7 +142,7 @@ class Boards extends Component {
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
         >
-           <ModalHeader toggle={this.toggle}>Create Board</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create Board</ModalHeader>
           {newBoardBody}
         </Modal>
         <Grid container spacing={3}>
@@ -155,12 +151,19 @@ class Boards extends Component {
               <BoardCard
                 id={board._id}
                 name={board.boardName}
-                date = {board.lastUpdatedDate}
+                date={board.lastUpdatedDate}
               />
             </Grid>
           ))}
         </Grid>
       </div>
+    );
+
+    const guestDisplay = <Guest />;
+    return (
+      <Container fluid>
+        {isAuthenticated ? authDisplay : guestDisplay}
+      </Container>
     );
   }
 }
@@ -172,8 +175,12 @@ Boards.propTypes = {
 const mapStateToProps = (state) => ({
   boards: state.boards,
   error: state.error,
+  auth: state.auth
 });
 
-export default connect(mapStateToProps, { getBoards, createBoard, clearErrors })(
-  withStyles(useStyles)(Boards)
-);
+export default connect(mapStateToProps, {
+  getBoards,
+  createBoard,
+  clearErrors,
+  verifyToken,
+})(withStyles(useStyles)(Boards));

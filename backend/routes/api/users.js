@@ -109,7 +109,7 @@ router.post('/', upload.single('userImage'),(request, response) => {
                         newUser.save()
                         .then(user => {
                             jwt.sign(
-                                {id: user.id, name: user.email},
+                                {id: user.id, name: user.email, firstName: user.firstName, lastName: user.lastName},
                                 config.secret,
                                 {expiresIn: config.tokenExpire},
                                 (err, token) => {

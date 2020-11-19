@@ -13,7 +13,6 @@ import {
 import {returnErrors} from './errorActions';
 
 // Verify token and then load user
-
 export const loadUser = () => (dispatch, getState) => {
     // User loading
     dispatch({ type: USER_LOADING });
@@ -98,6 +97,23 @@ export const login = ({email, password}) => dispatch =>  {
     axios.post('api/auth', body, config)
         .then(response => dispatch({
             type: LOGIN_SUCCESS,
+            payload: response.data
+        }))
+        .catch(error => {
+            dispatch(returnErrors(error.response.data, error.response.status, 'LOGIN_FAIL'));
+            dispatch({
+                type: LOGIN_FAIL
+            });
+        });
+};
+
+
+// Verify Token
+export const verifyToken = ()=> (dispatch, getState) =>  {
+    console.log("Calling Verify Token service");
+    axios.get('api/auth/verifytoken', tokenConfig(getState))
+        .then(response => dispatch({
+            type: USER_LOADED,
             payload: response.data
         }))
         .catch(error => {

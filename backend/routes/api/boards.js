@@ -49,16 +49,18 @@ router.post('/', auth, (request, response) => {
 router.get('/', auth, (request, response) => {
     //router.get('/', auth, (request, response) => {
     // Find boards which are created by logged in user or user is member
-    name = response.user.name;
+    name = request.user.name;
+    //user = request.user;
     logger.log('/boards GET API', 'email is : ' + name);
     board.find({status: 'Active', $or: [{createdBy: name},{adminUsers: name},
         { memberUsers: name}, {invitedUsers: name}  ]})
     .then(board => {
+        console.log('Boards found: ' + board.length);
         if(board.length==0){
             response.status(404).json({success: false, msg: messages.BOARD_NOT_FOUND});
         }
         else {
-            response.json(board);
+            response.json(board );
         }     
     })
     .catch(error => resonse.status(500).json({success: false, msg: error}));

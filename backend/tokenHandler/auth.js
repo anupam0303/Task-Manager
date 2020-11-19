@@ -19,8 +19,7 @@ function auth(request, response, next) {
     } catch (exception) {
         response.status(401).json({success: false, msg: messages.AUTH_TOKEN_NOT_VALID + exception});  
     }
-
-    
+  
 }
 
 module.exports = auth;

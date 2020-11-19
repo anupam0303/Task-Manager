@@ -1,11 +1,12 @@
 import axios from "axios"; 
 import * as actions from "../actions/types";
 import { returnErrors } from "./errorActions";
+import {tokenConfig} from './authActions';
 
-export const getBoards = () => (dispatch) => {
+export const getBoards = () => (dispatch, getState) => {
   dispatch(setBoardsLoading());
   axios
-    .get("/api/boards")
+    .get("/api/boards", tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.GET_BOARDS,
@@ -38,7 +39,7 @@ export const createBoard = ({ boardName }) => (dispatch) => {
       })
     )
     .catch((error) => {
-      console.log("IN catch block" + error);
+      console.log("In catch block" + error);
       dispatch({
         type: actions.BOARD_CREATE_FAIL,
         payload: error,
