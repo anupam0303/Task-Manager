@@ -4,7 +4,7 @@ const initialState = {
   boards: [],
   loading: false,
   boardCreateLoading: false,
-
+  workingBoard: localStorage.getItem('workingboardid'),
 };
  
 export default function (state = initialState, action) {
@@ -25,12 +25,18 @@ export default function (state = initialState, action) {
         ...state,
         loading: true,
       };
-      case actions.BOARD_CREATE_FAIL:
-      case actions.BOARD_CREATE_SUCCESS:
-        return {
-            ...state,
-            boardCreateLoading: false,
+    case actions.SET_WORKING_BOARD:
+      localStorage.setItem('workingboardid', action.boardid);    
+      return {
+          ...state,
+          workingBoard: action.boardid
         };
+    case actions.BOARD_CREATE_FAIL:
+    case actions.BOARD_CREATE_SUCCESS:
+      return {
+          ...state,
+          boardCreateLoading: false,
+      };
     default:
       return state;
   }

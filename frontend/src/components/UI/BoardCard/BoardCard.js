@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 310,
@@ -29,14 +30,21 @@ const useStyles = makeStyles({
   },
 });
 
+/* function routeChange(boardid) {
+  console.log('Route Change is called');
+  props.handleBoardClick(boardid);
+} */
+
 export default function BoardCard(props) {
   const classes = useStyles();
   var date = new Date(props.date); 
   var month = ["January", "February", "March", "April", "May", "June","July", 
                "August", "September", "October", "November", "December"][date.getMonth()];
 
+  
+
   return (
-    <Card className={classes.root} variant="outlined" > 
+    <Card className={classes.root} variant="outlined" onClick = {() => props.handleBoardClick(props.id)}> 
       <CardActionArea>
         <CardContent>
         <Typography className= {classes.title} >

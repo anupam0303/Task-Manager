@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.css';
 import Layout from "./components/Hoc/Layout/Layout";
 import Boards from "./containers/Boards/Boards";
+import SingleBoard from "./containers/SingleBoard/SingleBoard";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,6 +19,7 @@ class App extends Component {
           <Layout>
             <BrowserRouter>
               <Switch>
+                <Route path="/board" component={SingleBoard} />
                 <Route path="/" exact component={Boards} />
               </Switch>
             </BrowserRouter>

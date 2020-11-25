@@ -59,3 +59,10 @@ export const setBoardsLoading = () => {
     type: actions.BOARDS_LOADING,
   };
 };
+
+export const setWorkingBoard = (boardid) => {
+  return {
+    type: actions.SET_WORKING_BOARD,
+    boardid: boardid
+  }
+}

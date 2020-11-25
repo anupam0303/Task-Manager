@@ -17,7 +17,7 @@ import { clearErrors } from "../../actions/errorActions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getBoards, createBoard } from "../../actions/boardActions";
+import { getBoards, createBoard, setWorkingBoard } from "../../actions/boardActions";
 import {verifyToken} from "../../actions/authActions";
 
 const useStyles = (theme) => ({
@@ -92,6 +92,13 @@ class Boards extends Component {
     this.props.createBoard(newBoard);
   };
 
+  handleBoardClick = (boardid) => {
+    console.log('Clicked Board boardid is:' +boardid );
+    this.props.setWorkingBoard(boardid);
+    let path = `/board`;
+    window.location.href=path;
+  }
+
   render() {
     const { classes } = this.props;
     const { boards } = this.props.boards;
@@ -152,6 +159,7 @@ class Boards extends Component {
                 id={board._id}
                 name={board.boardName}
                 date={board.lastUpdatedDate}
+                handleBoardClick = {this.handleBoardClick}
               />
             </Grid>
           ))}
@@ -181,6 +189,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getBoards,
   createBoard,
+  setWorkingBoard,
   clearErrors,
   verifyToken,
 })(withStyles(useStyles)(Boards));
