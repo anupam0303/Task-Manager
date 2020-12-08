@@ -44,7 +44,7 @@ export default function BoardCard(props) {
   
 
   return (
-    <Card className={classes.root} variant="outlined" onClick = {() => props.handleBoardClick(props.id)}> 
+    <Card className={classes.root} variant="outlined" onClick = {() => props.handleBoardClick(props.id, props.name)}> 
       <CardActionArea>
         <CardContent>
         <Typography className= {classes.title} >

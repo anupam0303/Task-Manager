@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   boardCreateLoading: false,
   workingBoard: localStorage.getItem('workingboardid'),
+  workingBoardName: localStorage.getItem('workingboardname'),
 };
  
 export default function (state = initialState, action) {
@@ -26,17 +27,20 @@ export default function (state = initialState, action) {
         loading: true,
       };
     case actions.SET_WORKING_BOARD:
-      localStorage.setItem('workingboardid', action.boardid);    
+      localStorage.setItem('workingboardid', action.boardid);
+      localStorage.setItem('workingboardname', action.boardname);    
       return {
           ...state,
-          workingBoard: action.boardid
+          workingBoard: action.boardid,
+          workingBoardName: action.boardname
         };
-    case actions.BOARD_CREATE_FAIL:
     case actions.BOARD_CREATE_SUCCESS:
+      window.location.reload();
       return {
           ...state,
           boardCreateLoading: false,
       };
+    case actions.BOARD_CREATE_FAIL:
     default:
       return state;
   }

@@ -51,6 +51,36 @@ export const createtaskList = (newTaskList) => (dispatch, getState) => {
     });
 };
 
+
+export const createTask = (newTask) => (dispatch, getState) => {
+    // Request Body
+  const body = JSON.stringify({ ...newTask });
+  console.log('Create task body is: ' + body);
+  axios
+    .post("api/tasks", body, tokenConfig(getState))
+    .then((response) =>
+      dispatch({
+        type: actions.TASK_CREATE_SUCCESS,
+        payload: response.data,
+      })
+    )
+    .catch((error) => {
+      console.log("In catch block" + error);
+      dispatch({
+        type: actions.TASK_CREATE_FAIL,
+        payload: error,
+      });
+      dispatch(
+        returnErrors(
+          error.response.data,
+          error.response.status,
+          "TASK_CREATE_FAIL"
+        )
+      );
+    });
+};
+
+
 export const setBoardListsLoading = () => {
     return {
       type: actions.BOARD_TASKLISTS_LOADING,

@@ -1,11 +1,14 @@
-import React from "react";
+import React,{Component} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+
 
 import { Modal, ModalHeader } from "reactstrap";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
   root: {
     flexGrow: 1,
     display: "flex",
@@ -32,66 +35,85 @@ const useStyles = makeStyles((theme) => ({
     width: "45ch",
     height: "5ch",
   },
-}));
+});
 
-export default function NewTaskList(props) {
-  const classes = useStyles();
-  const [value, setValue] = React.useState();
-  const [open, setOpen] = React.useState(false);
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
+class NewTaskList extends Component {
+  
+  state = {
+    value: null,
+    open: false
   };
 
-  const toggle = () => {
-    setOpen(!open);
+  handleChange = (event) => {
+    this.setState({value: event.target.value});
   };
 
-  const handleCreateBoardList = () => {
-    console.log("Value is: " + value);
-    props.handleCreateBoardList(value);
+  toggle = () => {
+    this.setState({open: !this.state.open});
   };
 
-  const newColumnBody = (
-    <div className={classes.root}>
-      <Modal
-        isOpen={open}
-        toggle={toggle}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <ModalHeader toggle={toggle}>Add New Column</ModalHeader>
-        <TextField
-          className={classes.textField}
-          name="taskListName"
-          label="Task List Name"
-          id="standard-size-small"
-          defaultValue=""
-          size="small"
-          onChange={handleChange}
-        />
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={handleCreateBoardList}
+  handleCreateBoardList = () => {
+    console.log("Value is: " + this.state.value);
+    this.props.handleCreateBoardList(this.state.value);
+  };
+
+  
+  render() {
+    //const classes = useStyles();
+    const { classes } = this.props;
+    const newColumnBody = (
+      <div className={classes.root}>
+        <Modal
+          isOpen={this.state.open}
+          toggle={this.toggle}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
         >
-          ADD
-        </Button>
-      </Modal>
-    </div>
-  );
+          <ModalHeader toggle={this.toggle}>Add New Column</ModalHeader>
+          {this.props.error.status ? (
+              <Alert severity="error">{this.props.error.msg.msg}</Alert>
+            ) : null}
+          <TextField
+            className={classes.textField}
+            name="taskListName"
+            label="Task List Name"
+            id="standard-size-small"
+            defaultValue=""
+            size="small"
+            onChange={this.handleChange}
+          />
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={this.handleCreateBoardList}
+          >
+            ADD
+          </Button>
+        </Modal>
+      </div>
+    );
   return (
     <div>
       <Button
         className={classes.button}
         variant="contained"
         color="primary"
-        onClick={toggle}
+        onClick={this.toggle}
       >
         ADD COLUMN
       </Button>
       {newColumnBody}
     </div>
   );
+  }
 }
+
+const mapStateToProps = (state) => ({
+  boards: state.boards,
+  error: state.error,
+  auth: state.auth,
+  taskLists: state.taskLists,
+});
+
+export default connect(mapStateToProps, null)(withStyles(useStyles)(NewTaskList));

@@ -9,12 +9,13 @@ const authTask = require ('../../tokenHandler/authTask');
 const task = require('../../models/task');
 
 const user = require('../../models/user');
+const taskList = require('../../models/taskList');
 
 const router = express.Router();
 
 /*********************************************/
 // @route POST api/tasks
-// @desc Create a new Task List
+// @desc Create a new Task
 // @access Authorized Users
 /*********************************************/
 router.post('/', authTaskList, (request, response) => {
@@ -39,7 +40,19 @@ router.post('/', authTaskList, (request, response) => {
                 });
                 // Save new task to DB
                 newTask.save()
-                    .then(task => response.json(task))
+                    .then(task => {
+                        logger.log('POST /tasks', 'task ID for newly created task is: ' + task._id );
+                        taskList.findByIdAndUpdate({_id: taskListId}, {$push: {tasks: task._id}}, function(err, model)
+                    {
+                        logger.log('POST /tasks', 'task ID for newly created task is: ' + task._id );
+                        if (err) {
+                            response.status(500).json({ success: false, msg: err });
+                        }
+                        else {
+                            response.json(task);
+                        }
+                    })
+                    })
                     .catch(error => response.status(500).json({success: false, msg: error}));
             }
             else {

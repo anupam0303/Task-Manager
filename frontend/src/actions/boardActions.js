@@ -20,18 +20,11 @@ export const getBoards = () => (dispatch, getState) => {
 };
 
 // Create new board
-export const createBoard = ({ boardName }) => (dispatch) => {
-  // Headers
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
+export const createBoard = ({ boardName }) => (dispatch, getState) => {
   // Request Body
   const body = JSON.stringify({ boardName });
   axios
-    .post("/api/boards", body, config)
+    .post("/api/boards", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.BOARD_CREATE_SUCCESS,
@@ -60,9 +53,10 @@ export const setBoardsLoading = () => {
   };
 };
 
-export const setWorkingBoard = (boardid) => {
+export const setWorkingBoard = (boardid, boardname) => {
   return {
     type: actions.SET_WORKING_BOARD,
-    boardid: boardid
+    boardid: boardid,
+    boardname: boardname
   }
 }

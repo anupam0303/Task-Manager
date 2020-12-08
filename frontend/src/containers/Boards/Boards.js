@@ -92,9 +92,9 @@ class Boards extends Component {
     this.props.createBoard(newBoard);
   };
 
-  handleBoardClick = (boardid) => {
+  handleBoardClick = (boardid, boardname) => {
     console.log('Clicked Board boardid is:' +boardid );
-    this.props.setWorkingBoard(boardid);
+    this.props.setWorkingBoard(boardid, boardname);
     let path = `/board`;
     window.location.href=path;
   }

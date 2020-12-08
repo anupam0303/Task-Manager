@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -9,10 +8,19 @@ import { getTaskLists, createtaskList } from "../../actions/taskListActions";
 import { verifyToken } from "../../actions/authActions";
 
 import NewTaskList from "../../components/UI/TaskList/NewTaskList";
+import TaskListSwimLane from "../../components/UI/TaskList/TaskListSwimLane";
 
 const useStyles = (theme) => ({
   root: {
-    flexGrow: 1,
+    display: "flex",
+    flexDirection: "row",
+  },
+  gridList: {
+    transform: "translateZ(0)",
+  },
+  taskList: {
+    display: "flex",
+    flexDirection: "row",
   },
   paper: {
     padding: 2,
@@ -57,25 +65,30 @@ class SingleBoard extends Component {
 
   render() {
     const classes = useStyles();
+    //const { classes } = this.props;
     const { taskLists } = this.props.taskLists;
-    var hasTaskLists = this.props.taskLists.taskLists.taskList ? true : false;
+    var hasTaskLists = this.props.taskLists.taskLists.taskLists ? true : false;
     console.log("hasTaskLists: " + hasTaskLists);
     const showTaskLists = () => {
       if (hasTaskLists) {
-        return taskLists.taskList.map((taskList) => (
-          <h1>{taskList.taskListName}</h1>
+        return taskLists.taskLists.map((taskList) => (
+          <TaskListSwimLane taskListName= {taskList.taskListName} taskListId={taskList._id} />
         ));
       }
     };
     return (
       <div className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={6}></Grid>
-          <Grid item xs={6}>
+        <Grid container justify="space-around" spacing={3}>
+          <Grid item xs={12} sm={3}>
+            <h4>{this.props.boards.workingBoardName}</h4>
+          </Grid>
+          <Grid item xs={12} sm={3} >
             <NewTaskList handleCreateBoardList={this.handleCreateBoardList} />
           </Grid>
-        </Grid>
-        {showTaskLists()}
+          </Grid>
+        <div style={{display: "flex", flexWrap: "nowrap",flexDirection: "row", overflow: "auto"}}>
+            {showTaskLists()}
+        </div>
       </div>
     );
   }

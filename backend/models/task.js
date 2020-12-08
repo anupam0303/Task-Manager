@@ -24,10 +24,8 @@ const TaskSchema = new Schema ({
     order: {
         type: Number
     },
-    taskListId: {
-        type: String,
-        required: true
-    },
+    taskListId: 
+        {type:Schema.Types.ObjectId, ref: 'TaskList'},
     createdDate: {
         type: Date,
         default: Date.now
@@ -44,4 +42,4 @@ const TaskSchema = new Schema ({
     }
 });
 
-module.exports = Task = mongoose.model('task', TaskSchema);
+module.exports = Task = mongoose.model('Task', TaskSchema);
