@@ -34,7 +34,7 @@ class TaskListSwimLane extends Component {
   };
 
   addTask = () => {
-    alert(this.state.newTaskTitle);
+    //alert(this.state.newTaskTitle);
     let newTask = {
         header: this.state.newTaskTitle,
         taskListId: this.props.taskListId
