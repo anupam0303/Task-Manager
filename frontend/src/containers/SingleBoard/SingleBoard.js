@@ -64,8 +64,8 @@ class SingleBoard extends Component {
   };
 
   render() {
-    const classes = useStyles();
-    //const { classes } = this.props;
+    //const classes = useStyles();
+    const { classes } = this.props;
     const { taskLists } = this.props.taskLists;
     var hasTaskLists = this.props.taskLists.taskLists.taskLists ? true : false;
     console.log("hasTaskLists: " + hasTaskLists);
