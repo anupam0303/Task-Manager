@@ -10,7 +10,8 @@ import { verifyToken } from "../../actions/authActions";
 import NewTaskList from "../../components/UI/TaskList/NewTaskList";
 import TaskListSwimLane from "../../components/UI/TaskList/TaskListSwimLane";
 
-const useStyles = (theme) => ({
+//const useStyles = (theme) => ({
+const styles = {
   root: {
     display: "flex",
     flexDirection: "row",
@@ -21,12 +22,14 @@ const useStyles = (theme) => ({
   taskList: {
     display: "flex",
     flexDirection: "row",
+    flexWrap: "nowrap",
+    overflow: "auto",
   },
   paper: {
     padding: 2,
     textAlign: "center",
   },
-});
+};
 
 class SingleBoard extends Component {
   state = {
@@ -77,7 +80,8 @@ class SingleBoard extends Component {
       }
     };
     return (
-      <div className={classes.root}>
+      <div >
+        <div className={classes.root}>
         <Grid container justify="space-around" spacing={3}>
           <Grid item xs={12} sm={3}>
             <h4>{this.props.boards.workingBoardName}</h4>
@@ -86,7 +90,8 @@ class SingleBoard extends Component {
             <NewTaskList handleCreateBoardList={this.handleCreateBoardList} />
           </Grid>
           </Grid>
-        <div style={{display: "flex", flexWrap: "nowrap",flexDirection: "row", overflow: "auto"}}>
+          </div>
+        <div className={classes.taskList}>
             {showTaskLists()}
         </div>
       </div>
@@ -105,4 +110,4 @@ export default connect(mapStateToProps, {
   verifyToken,
   getTaskLists,
   createtaskList,
-})(withStyles(useStyles)(SingleBoard));
+})(withStyles(styles)(SingleBoard));
