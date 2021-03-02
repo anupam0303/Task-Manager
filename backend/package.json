@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app",
     "server": "nodemon app.js",
-    "client": "npm  start --prefix ..\\frontend",
+    "client": "npm  start --prefix ../frontend",
     "dev": "concurrently \"npm run server \" \"npm run client\""
   },
   "author": "Anupam Gupta",
