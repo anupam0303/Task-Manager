@@ -22,10 +22,6 @@ export default function Task(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(props.header);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-    props.setNewTaskTitle(event.target.value);
-  };
 
   return (
     <div className={classes.root}>

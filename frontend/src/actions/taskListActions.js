@@ -1,4 +1,5 @@
 import axios from "axios"; 
+import * as backend from '../config';
 import * as actions from "../actions/types";
 import { returnErrors } from "./errorActions";
 import {tokenConfig} from './authActions';
@@ -9,7 +10,7 @@ export const getTaskLists = (boardid) => (dispatch, getState) => {
     const BOARDLIST_URL = 'api/boards/';
     console.log('URL to fetch the boardlists is : ' + BOARDLIST_URL+ boardid );
     axios
-    .get(BOARDLIST_URL+ boardid, tokenConfig(getState))
+    .get(backend.backend+BOARDLIST_URL+ boardid, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.GET_BOARD_TASKLISTS,
@@ -28,7 +29,7 @@ export const createtaskList = (newTaskList) => (dispatch, getState) => {
   const body = JSON.stringify({ ...newTaskList });
   console.log('Create task list body is: ' + body);
   axios
-    .post("api/tasklists", body, tokenConfig(getState))
+    .post(backend.backend+"api/tasklists", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.TASKLIST_CREATE_SUCCESS,
@@ -57,7 +58,7 @@ export const createTask = (newTask) => (dispatch, getState) => {
   const body = JSON.stringify({ ...newTask });
   console.log('Create task body is: ' + body);
   axios
-    .post("api/tasks", body, tokenConfig(getState))
+    .post(backend.backend+"api/tasks", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.TASK_CREATE_SUCCESS,

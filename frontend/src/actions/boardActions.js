@@ -1,4 +1,5 @@
 import axios from "axios"; 
+import * as backend from '../config';
 import * as actions from "../actions/types";
 import { returnErrors } from "./errorActions";
 import {tokenConfig} from './authActions';
@@ -6,7 +7,7 @@ import {tokenConfig} from './authActions';
 export const getBoards = () => (dispatch, getState) => {
   dispatch(setBoardsLoading());
   axios
-    .get("/api/boards", tokenConfig(getState))
+    .get(backend.backend+"/api/boards", tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.GET_BOARDS,
@@ -24,7 +25,7 @@ export const createBoard = ({ boardName }) => (dispatch, getState) => {
   // Request Body
   const body = JSON.stringify({ boardName });
   axios
-    .post("/api/boards", body, tokenConfig(getState))
+    .post(backend.backend+"/api/boards", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.BOARD_CREATE_SUCCESS,

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as backend from '../config';
 import {
     USER_LOADING,
     USER_LOADED,
@@ -18,7 +19,7 @@ export const loadUser = () => (dispatch, getState) => {
     dispatch({ type: USER_LOADING });
 
     // Fetch User
-    axios.get('/api/auth/user', tokenConfig(getState))
+    axios.get(backend.backend+'/api/auth/user', tokenConfig(getState))
         .then(response => dispatch({
             type: USER_LOADED,
             payload: response.data
@@ -68,7 +69,7 @@ export const register = ({firstName, lastName, email, password}) => dispatch => 
     
     // Request body
     const body = JSON.stringify({firstName, lastName, email, password});
-    axios.post('/api/users', body, config)
+    axios.post(backend.backend+'/api/users', body, config)
         .then(response => dispatch({
             type: REGISTER_SUCCESS,
             payload: response.data
@@ -93,7 +94,6 @@ export const login = ({email, password}) => dispatch =>  {
 
     // Request body
     const body = JSON.stringify({email, password});
-
     axios.post('api/auth', body, config)
         .then(response => dispatch({
             type: LOGIN_SUCCESS,
@@ -111,7 +111,7 @@ export const login = ({email, password}) => dispatch =>  {
 // Verify Token
 export const verifyToken = ()=> (dispatch, getState) =>  {
     console.log("Calling Verify Token service");
-    axios.get('api/auth/verifytoken', tokenConfig(getState))
+    axios.get(backend.backend+'api/auth/verifytoken', tokenConfig(getState))
         .then(response => dispatch({
             type: USER_LOADED,
             payload: response.data
