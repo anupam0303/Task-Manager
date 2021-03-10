@@ -7,7 +7,7 @@ import {tokenConfig} from './authActions';
 export const getTaskLists = (boardid) => (dispatch, getState) => {
     console.log('boardid in getTaskLists: ' + boardid );
     dispatch(setBoardListsLoading());
-    const BOARDLIST_URL = 'api/boards/';
+    const BOARDLIST_URL = '/api/boards/';
     console.log('URL to fetch the boardlists is : ' + BOARDLIST_URL+ boardid );
     axios
     .get(backend.backend+BOARDLIST_URL+ boardid, tokenConfig(getState))
@@ -29,7 +29,7 @@ export const createtaskList = (newTaskList) => (dispatch, getState) => {
   const body = JSON.stringify({ ...newTaskList });
   console.log('Create task list body is: ' + body);
   axios
-    .post(backend.backend+"api/tasklists", body, tokenConfig(getState))
+    .post(backend.backend+"/api/tasklists", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.TASKLIST_CREATE_SUCCESS,
@@ -58,7 +58,7 @@ export const createTask = (newTask) => (dispatch, getState) => {
   const body = JSON.stringify({ ...newTask });
   console.log('Create task body is: ' + body);
   axios
-    .post(backend.backend+"api/tasks", body, tokenConfig(getState))
+    .post(backend.backend+"/api/tasks", body, tokenConfig(getState))
     .then((response) =>
       dispatch({
         type: actions.TASK_CREATE_SUCCESS,

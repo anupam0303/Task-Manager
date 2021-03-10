@@ -94,7 +94,7 @@ export const login = ({email, password}) => dispatch =>  {
 
     // Request body
     const body = JSON.stringify({email, password});
-    axios.post('api/auth', body, config)
+    axios.post(backend.backend+'/api/auth', body, config)
         .then(response => dispatch({
             type: LOGIN_SUCCESS,
             payload: response.data
@@ -111,7 +111,7 @@ export const login = ({email, password}) => dispatch =>  {
 // Verify Token
 export const verifyToken = ()=> (dispatch, getState) =>  {
     console.log("Calling Verify Token service");
-    axios.get(backend.backend+'api/auth/verifytoken', tokenConfig(getState))
+    axios.get(backend.backend+'/api/auth/verifytoken', tokenConfig(getState))
         .then(response => dispatch({
             type: USER_LOADED,
             payload: response.data
